@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Restaurant_Management_System.Data;
 using Restaurant_Management_System.HealthChecks;
@@ -8,10 +9,10 @@ using Restaurant_Management_System.Models;
 using Restaurant_Management_System.Repositories;
 using Restaurant_Management_System.Services;
 using Serilog;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure Serilog
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .Enrich.FromLogContext()
@@ -21,7 +22,6 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-// Database Configuration
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -30,7 +30,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-// Application Services
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -41,7 +40,6 @@ builder.Services.AddMemoryCache();
 builder.Services.AddResponseCaching();
 builder.Services.AddAutoMapper(typeof(Program));
 
-// Health Checks
 builder.Services.AddHealthChecks()
     .AddSqlServer(connectionString)
     .AddCheck<MemoryCacheHealthCheck>("memory-cache");
@@ -57,7 +55,6 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// Configure HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -73,15 +70,35 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Endpoints
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 app.MapHub<NotificationHub>("/notificationHub");
-app.MapHealthChecks("/health");
 
-// ✅ Seed Roles + Admin User inside a scope
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = async (context, report) =>
+    {
+        context.Response.ContentType = "application/json";
+
+        var result = JsonSerializer.Serialize(new
+        {
+            status = report.Status.ToString(),
+            checks = report.Entries.Select(entry => new
+            {
+                name = entry.Key,
+                status = entry.Value.Status.ToString(),
+                description = entry.Value.Description,
+                duration = entry.Value.Duration.ToString()
+            }),
+            totalDuration = report.TotalDuration.ToString()
+        });
+
+        await context.Response.WriteAsync(result);
+    }
+});
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
