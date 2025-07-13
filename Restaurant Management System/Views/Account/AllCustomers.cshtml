@@ -1,4 +1,4 @@
-﻿@model List<Restaurant_Management_System.Models.CustomerViewModel>
+﻿@model X.PagedList.IPagedList<Restaurant_Management_System.Models.CustomerViewModel>
 
 @{
     ViewData["Title"] = "All Registered Customers";
@@ -25,3 +25,4 @@
         }
     </tbody>
 </table>
+@Html.Partial("_Pagination", Model)

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Restaurant_Management_System.Models
@@ -17,6 +18,7 @@ namespace Restaurant_Management_System.Models
         public string? ImageUrl { get; set; }
         public bool IsAvailable { get; set; }
         [Required]
+        [DisplayName("Category")]
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
         [NotMapped]

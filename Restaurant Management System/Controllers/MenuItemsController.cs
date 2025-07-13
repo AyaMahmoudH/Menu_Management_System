@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Restaurant_Management_System.DTOs;
 using Restaurant_Management_System.Interfaces;
 using Restaurant_Management_System.Models;
+using X.PagedList.Extensions;
 
 namespace Restaurant_Management_System.Controllers
 {
@@ -21,10 +22,15 @@ namespace Restaurant_Management_System.Controllers
 
         [AllowAnonymous]
         [ResponseCache(Duration = 300)]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
+            
             var menuItems = await _menuItemService.GetAllMenuItemsAsync();
-            return View(menuItems);
+            int pageSize = 6;
+            int pageNumber = page ?? 1;
+            var pagedItems = menuItems.ToPagedList(pageNumber, pageSize);
+
+            return View(pagedItems);
         }
         public async Task<IActionResult> Details(int id)
         {

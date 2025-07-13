@@ -7,6 +7,8 @@ using Restaurant_Management_System.Interfaces;
 using Restaurant_Management_System.Models;
 using Restaurant_Management_System.Services;
 using Serilog;
+using X.PagedList;
+using X.PagedList.Extensions;
 
 public class AccountController : Controller
 {
@@ -89,7 +91,7 @@ public class AccountController : Controller
     }
 
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> AllCustomers()
+    public async Task<IActionResult> AllCustomers(int? page)
     {
         var customers = await _userManager.GetUsersInRoleAsync("Customer");
 
@@ -100,7 +102,12 @@ public class AccountController : Controller
             Email = u.Email
         }).ToList();
 
-        return View(result);
+        int pageSize = 5;
+        int pageNumber = page ?? 1;
+
+        var pagedList = result.ToPagedList(pageNumber, pageSize);
+
+        return View(pagedList);
     }
 
 }
