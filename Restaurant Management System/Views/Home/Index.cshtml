@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Welcome to Restaurant Management System";
+}
+
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-6 mb-4" data-aos="fade-right">
+            <h1 class="display-5 fw-bold text-primary">Welcome to RMS</h1>
+            <p class="lead mt-3">
+                Your complete solution for managing menu items, customer orders, and table reservations with real-time notifications.
+            </p>
+            <a class="btn btn-primary btn-lg mt-3" asp-controller="Orders" asp-action="Index">View Orders</a>
+            <a class="btn btn-outline-secondary btn-lg mt-3 ms-2" asp-controller="MenuItems" asp-action="Index">Browse Menu</a>
+        </div>
+        <div class="col-lg-6 text-center" data-aos="zoom-in">
+            <img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" class="img-fluid" style="max-height: 350px;" alt="Restaurant Logo" />
+        </div>
+    </div>
+
+    <hr class="my-5" />
+
+    <div class="row text-center">
+        <div class="col-md-4" data-aos="flip-left">
+            <div class="card shadow-lg border-0">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Orders</h5>
+                    <p class="card-text">Manage and track real-time orders placed by customers with live updates.</p>
+                    <a asp-controller="Orders" asp-action="Index" class="btn btn-outline-primary btn-sm">Manage Orders</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" data-aos="flip-up">
+            <div class="card shadow-lg border-0">
+                <div class="card-body">
+                    <h5 class="card-title text-success">Menu</h5>
+                    <p class="card-text">Create, edit, and update your restaurant’s menu items easily.</p>
+                    <a asp-controller="MenuItems" asp-action="Index" class="btn btn-outline-success btn-sm">View Menu</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" data-aos="flip-right">
+            <div class="card shadow-lg border-0">
+                <div class="card-body">
+                    <h5 class="card-title text-danger">Reservations</h5>
+                    <p class="card-text">Allow customers to book tables and manage table availability.</p>
+                    <a asp-controller="Reservations" asp-action="Index" class="btn btn-outline-danger btn-sm">Manage Reservations</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init();
+</script>

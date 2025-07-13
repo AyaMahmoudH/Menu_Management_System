@@ -1,0 +1,34 @@
+﻿<form id="delete-form-@Model.Id" method="post">
+    @Html.AntiForgeryToken()
+    <button type="button" class="btn btn-danger"
+            onclick="deleteMenuItem(@Model.Id)">
+        Delete
+    </button>
+</form>
+
+
+
+@section Scripts {
+    <script>
+        function deleteMenuItem(id) {
+            Swal.fire({
+                title: "Are you sure?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post('/MenuItems/Delete', { id }, function (res) {
+                        Swal.fire(res.message, '', res.success ? "success" : "error")
+                            .then(() => {
+                                if (res.success && res.redirectUrl) {
+                                    window.location.href = res.redirectUrl;
+                                }
+                            });
+                    });
+                }
+            });
+        }
+    </script>
+}
+

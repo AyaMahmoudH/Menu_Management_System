@@ -1,0 +1,23 @@
+﻿@{
+    var categories = ViewBag.Categories as IEnumerable<Restaurant_Management_System.Models.Category>;
+}
+<div class="modal fade" id="menuItemModal" tabindex="-1" aria-labelledby="menuItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content shadow-sm rounded-3">
+            <div class="modal-header">
+                <h5 class="modal-title" id="menuItemModalLabel">Add Menu Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="menuItemForm">
+                <div class="modal-body">
+                    <input type="hidden" id="menuItemId" name="Id" value="0" />
+                 
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

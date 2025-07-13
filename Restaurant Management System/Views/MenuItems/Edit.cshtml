@@ -1,0 +1,82 @@
+﻿@model Restaurant_Management_System.DTOs.MenuItemDto
+
+@{
+    ViewData["Title"] = "Edit Menu Item";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <div class="card shadow rounded-4">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0">Edit Menu Item</h4>
+            </div>
+            <div class="card-body">
+                <form id="edit-form"  method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Price" class="form-label"></label>
+                        <input asp-for="Price" class="form-control" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CategoryId" class="form-label"></label>
+                        <select asp-for="CategoryId" class="form-select"
+                                asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name", Model.CategoryId))">
+                            <option value="">-- Select Category --</option>
+                        </select>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="clientFile" class="form-label"></label>
+                        <input asp-for="clientFile" type="file" class="form-control" onchange="previewImage(this, '#preview-edit')" />
+                        <img id="preview-edit"
+                             @(string.IsNullOrEmpty(Model.imageSrc) ? "class='img-thumbnail mt-2 d-none'" : $"class='img-thumbnail mt-2'")
+                             src="@(string.IsNullOrEmpty(Model.imageSrc) ? "" : Model.imageSrc)"
+                             alt="Image Preview"
+                             style="max-width: 200px;" />
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <p><strong>Current Image:</strong></p>
+                        }
+
+                    </div>
+
+
+                    <div class="form-check mb-3">
+                        <input asp-for="IsAvailable" class="form-check-input" />
+                        <label asp-for="IsAvailable" class="form-check-label"></label>
+                    </div>
+
+                    <button type="button" class="btn btn-warning"
+                            onclick="submitFormAjax('#edit-form', '/MenuItems/Edit')">
+                        Save Changes
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+   
+    <script src="~/js/men.js"></script>
+
+}

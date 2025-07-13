@@ -1,0 +1,12 @@
+﻿<a asp-controller="MenuItems" asp-action="Edit" asp-route-id="@Model"
+   class="btn btn-sm btn-warning">Edit</a>
+<a asp-controller="MenuItems" asp-action="Create" asp-route-id="@Model"
+   class="btn btn-sm btn-warning">Create</a>
+<form asp-controller="MenuItems" asp-action="Delete" asp-route-id="@Model"
+      method="post" style="display:inline;">
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-sm btn-danger"
+            onclick="return confirm('Are you sure you want to delete this item?');">
+        Delete
+    </button>
+</form>
