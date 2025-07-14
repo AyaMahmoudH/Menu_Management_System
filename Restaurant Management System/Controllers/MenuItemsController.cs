@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Restaurant_Management_System.DTOs;
 using Restaurant_Management_System.Interfaces;
 using Restaurant_Management_System.Models;
+using Restaurant_Management_System.Services;
 using X.PagedList.Extensions;
 
 namespace Restaurant_Management_System.Controllers
@@ -14,24 +15,38 @@ namespace Restaurant_Management_System.Controllers
         private readonly IRepository<Category> _categoryRepository;
         public MenuItemsController(
            IMenuItemService menuItemService,
-           IRepository<Category> categoryRepository)
+           IRepository<Category> categoryRepository
+           )
         {
             _menuItemService = menuItemService;
             _categoryRepository = categoryRepository;
+           
         }
 
         [AllowAnonymous]
         [ResponseCache(Duration = 300)]
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(int? categoryId, int? page)
         {
-            
-            var menuItems = await _menuItemService.GetAllMenuItemsAsync();
+            var categories = await _categoryRepository.GetAllAsync();
+            IEnumerable<MenuItemDto> menuItems;
+
+            if (categoryId.HasValue)
+                menuItems = await _menuItemService.GetMenuItemsByCategoryAsync(categoryId.Value); 
+            else
+                menuItems = await _menuItemService.GetAllMenuItemsAsync();
+
             int pageSize = 6;
             int pageNumber = page ?? 1;
             var pagedItems = menuItems.ToPagedList(pageNumber, pageSize);
 
+            ViewBag.Categories = categories;
+            ViewBag.SelectedCategoryId = categoryId;
+
             return View(pagedItems);
         }
+
+
+
         public async Task<IActionResult> Details(int id)
         {
             var menuItem = await _menuItemService.GetMenuItemByIdAsync(id);

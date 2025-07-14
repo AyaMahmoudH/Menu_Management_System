@@ -4,79 +4,83 @@
     ViewData["Title"] = "Edit Menu Item";
 }
 
-<div class="row justify-content-center mt-5">
-    <div class="col-md-8">
-        <div class="card shadow rounded-4">
-            <div class="card-header bg-warning text-dark">
-                <h4 class="mb-0">Edit Menu Item</h4>
-            </div>
-            <div class="card-body">
-                <form id="edit-form"  method="post" enctype="multipart/form-data">
-                    @Html.AntiForgeryToken()
-                    <input type="hidden" asp-for="Id" />
-
-                    <div class="mb-3">
-                        <label asp-for="Name" class="form-label"></label>
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="Description" class="form-label"></label>
-                        <textarea asp-for="Description" class="form-control"></textarea>
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="Price" class="form-label"></label>
-                        <input asp-for="Price" class="form-control" />
-                        <span asp-validation-for="Price" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="CategoryId" class="form-label"></label>
-                        <select asp-for="CategoryId" class="form-select"
-                                asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name", Model.CategoryId))">
-                            <option value="">-- Select Category --</option>
-                        </select>
-                        <span asp-validation-for="CategoryId" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="clientFile" class="form-label"></label>
-                        <input asp-for="clientFile" type="file" class="form-control" onchange="previewImage(this, '#preview-edit')" />
-                        <img id="preview-edit"
-                             @(string.IsNullOrEmpty(Model.imageSrc) ? "class='img-thumbnail mt-2 d-none'" : $"class='img-thumbnail mt-2'")
-                             src="@(string.IsNullOrEmpty(Model.imageSrc) ? "" : Model.imageSrc)"
-                             alt="Image Preview"
-                             style="max-width: 200px;" />
-                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
-                        {
-                            <p><strong>Current Image:</strong></p>
-                        }
-
-                    </div>
-
-
-                    <div class="form-check mb-3">
-                        <input asp-for="IsAvailable" class="form-check-input" />
-                        <label asp-for="IsAvailable" class="form-check-label"></label>
-                    </div>
-
-                    <button type="button" class="btn btn-warning"
-                            onclick="submitFormAjax('#edit-form', '/MenuItems/Edit')">
-                        Save Changes
-                    </button>
-                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-                </form>
-            </div>
+<div class="flex justify-center mt-10">
+    <div class="w-full max-w-2xl bg-white rounded-3xl shadow-xl p-8">
+        <div class="border-b pb-4 mb-6">
+            <h2 class="text-3xl font-bold text-yellow-600">✏️ Edit Menu Item</h2>
         </div>
+
+        <form id="edit-form" method="post" enctype="multipart/form-data" class="space-y-6">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <div>
+                <label asp-for="Name" class="block mb-1 text-yellow-700 font-medium"></label>
+                <input asp-for="Name" class="w-full px-4 py-2 border border-yellow-300 rounded-lg focus:ring-2 focus:ring-yellow-500" />
+                <span asp-validation-for="Name" class="text-sm text-red-500"></span>
+            </div>
+
+            <div>
+                <label asp-for="Description" class="block mb-1 text-yellow-700 font-medium"></label>
+                <textarea asp-for="Description" class="w-full px-4 py-2 border border-yellow-300 rounded-lg focus:ring-2 focus:ring-yellow-500"></textarea>
+                <span asp-validation-for="Description" class="text-sm text-red-500"></span>
+            </div>
+
+            <div>
+                <label asp-for="Price" class="block mb-1 text-yellow-700 font-medium"></label>
+                <input asp-for="Price" class="w-full px-4 py-2 border border-yellow-300 rounded-lg focus:ring-2 focus:ring-yellow-500" />
+                <span asp-validation-for="Price" class="text-sm text-red-500"></span>
+            </div>
+
+            <div>
+                <label asp-for="CategoryId" class="block mb-1 text-yellow-700 font-medium"></label>
+                <select asp-for="CategoryId"
+                        class="w-full px-4 py-2 border border-yellow-300 rounded-lg focus:ring-2 focus:ring-yellow-500"
+                        asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name", Model.CategoryId))">
+                    <option value="">-- Select Category --</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-sm text-red-500"></span>
+            </div>
+
+            <div>
+                <label asp-for="clientFile" class="block mb-1 text-yellow-700 font-medium"></label>
+                <input asp-for="clientFile" type="file"
+                       class="w-full px-4 py-2 border border-yellow-300 rounded-lg focus:ring-2 focus:ring-yellow-500"
+                       onchange="previewImage(this, '#preview-edit')" />
+
+                <img id="preview-edit"
+                     alt="Image Preview"
+                     src="@(string.IsNullOrEmpty(Model.imageSrc) ? "" : Model.imageSrc)"
+                     class="mt-4 rounded-md shadow w-32 h-32 object-cover @(string.IsNullOrEmpty(Model.imageSrc) ? "hidden" : "")" />
+
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <p class="text-gray-700 mt-2"><strong>Current Image:</strong></p>
+                }
+            </div>
+
+            <div class="flex items-center">
+                <input asp-for="IsAvailable" class="mr-2 rounded border-yellow-400 focus:ring-yellow-500" />
+                <label asp-for="IsAvailable" class="text-yellow-700 font-medium"></label>
+            </div>
+
+            <div class="flex space-x-4">
+                <button type="button"
+                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-full font-semibold transition-transform transform hover:scale-105 shadow-md"
+                        onclick="submitFormAjax('#edit-form', '/MenuItems/Edit')">
+                    💾 Save Changes
+                </button>
+
+                <a asp-action="Index"
+                   class="bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-semibold hover:bg-gray-300 transition-transform transform hover:scale-105 shadow-md">
+                    Cancel
+                </a>
+            </div>
+        </form>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-   
     <script src="~/js/men.js"></script>
-
 }

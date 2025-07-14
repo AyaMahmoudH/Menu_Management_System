@@ -16,6 +16,7 @@ namespace Restaurant_Management_System.Services
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<AccountService> _logger;
         private readonly IHubContext<NotificationHub> _hubContext;
+
         public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<AccountService> logger, IHubContext<NotificationHub> hubContext)
         {
             _userManager = userManager;
@@ -57,7 +58,7 @@ namespace Restaurant_Management_System.Services
               .SendAsync("ReceiveUserNotification", $"New user registered: {user.UserName}");
                 return (true, "Registration successful");
             }
-          
+
 
             var errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
             return (false, errorMessage);
@@ -76,6 +77,7 @@ namespace Restaurant_Management_System.Services
                 _logger.LogInformation("User logged in: {Email}", model.Email);
                 return (true, "Login successful");
             }
+
             return (false, "Invalid login attempt");
         }
 

@@ -1,16 +1,20 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-
+@using Restaurant_Management_System.Data
+@inject ApplicationDbContext _context
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@ViewData["Title"] - Restaurant Management</title>
+    <link href="~/css/site.css" rel="stylesheet" />
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 
     <!-- SweetAlert 2 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
@@ -21,65 +25,53 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
-<body>
+<body class="bg-pink-50 min-h-screen d-flex flex-column">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="/">Restaurant System</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <nav class="bg-gradient-to-r from-pink-500 to-pink-600 shadow-lg text-white sticky top-0 z-50">
+            <div class="container-fluid flex justify-between items-center px-4 py-3">
 
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <!-- Left Links -->
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="MenuItems" asp-action="Index">Menu</a>
-                 
-                </ul>
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Account" asp-action="AllCustomers">Users</a>
-
-                </ul>
-
-                <!-- Right Links -->
-                <ul class="navbar-nav ms-auto">
-                    @if (SignInManager.IsSignedIn(User))
+                <!-- Left: Admin-only Links -->
+                <ul class="flex items-center gap-4">
+                    @if (User.IsInRole("Admin"))
                     {
-                        <li class="nav-item d-flex align-items-center me-2">
-                            <span class="text-white fw-semibold">Hello, @User.Identity?.Name</span>
-                        </li>
-                        <li class="nav-item">
-                            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
-                            </form>
+                        <li>
+                            <a asp-controller="Account" asp-action="AllCustomers"
+                               class="hover:text-yellow-300 font-semibold text-white transition duration-200">
+                                👥 Users
+                            </a>
                         </li>
                     }
-                    else
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Account" asp-action="Register">Register</a>
-                        </li>
-                    }
+                </ul>
+
+                <!-- Right: User Info & Logout -->
+                <ul class="flex items-center gap-3">
+                    <li>
+                        <span class="text-white font-semibold">Hello, @User.Identity?.Name</span>
+                    </li>
+                    <li>
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="inline">
+                            <button type="submit"
+                                    class="bg-white text-pink-600 font-bold py-1 px-4 rounded-full hover:bg-pink-100 transition duration-200">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
                 </ul>
             </div>
-        </div>
-    </nav>
+        </nav>
 
+
+        }
     <!-- Main Body -->
-    <main class="container mt-4 mb-5">
+    <main class="container py-5 flex-grow">
         @RenderBody()
     </main>
 
     <!-- Footer -->
-    <footer class="footer border-top text-muted text-center py-3">
-        <div class="container">
-            &copy; @DateTime.Now.Year - Restaurant Management System
-        </div>
+    <footer class="bg-pink-100 text-center text-gray-600 py-3 shadow-inner mt-auto">
+        &copy; @DateTime.Now.Year - Restaurant Management System 💖
     </footer>
    
 

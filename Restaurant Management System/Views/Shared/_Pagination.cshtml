@@ -1,17 +1,28 @@
 ﻿@using X.PagedList.Mvc.Core
 @using X.PagedList
+
 @model IPagedList
 
-<div class="d-flex justify-content-center mt-4">
-    @Html.PagedListPager(Model, page => Url.Action(ViewContext.RouteData.Values["action"].ToString(), new { page }),
-    new PagedListRenderOptions
-    {
-        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-        DisplayLinkToLastPage = PagedListDisplayMode.Always,
-        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-        DisplayLinkToNextPage = PagedListDisplayMode.Always,
-        UlElementClasses = new[] { "pagination" },
-        LiElementClasses = new[] { "page-item" },
-        PageClasses = new[] { "page-link" }
-    })
+@if (Model.PageCount > 1)
+{
+    <div class="flex justify-center mt-8">
+        @Html.PagedListPager(Model, page => Url.Action(
+        ViewContext.RouteData.Values["action"].ToString(),
+        new { page, categoryId = ViewBag.SelectedCategoryId }),
+        new PagedListRenderOptions
+        {
+            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+            DisplayLinkToLastPage = PagedListDisplayMode.Always,
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            LiElementClasses = new[] { "inline-block", "mx-1" },
+            UlElementClasses = new[] { "flex", "justify-center", "flex-wrap" },
+            PageClasses = new[] {
+        "px-4", "py-2", "rounded-full", "border", "border-pink-500",
+        "text-pink-500", "hover:bg-pink-500", "hover:text-white",
+        "transition-colors", "duration-300", "font-semibold"
+        },
+            ActiveLiElementClass = "bg-pink-500 text-white"
+        })
 </div>
+}

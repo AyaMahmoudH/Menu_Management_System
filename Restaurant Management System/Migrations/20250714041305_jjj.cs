@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Restaurant_Management_System.Migrations
 {
     /// <inheritdoc />
-    public partial class jj : Migration
+    public partial class jjj : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -215,7 +215,13 @@ namespace Restaurant_Management_System.Migrations
                 values: new object[,]
                 {
                     { 1, 1, "Crispy rolls stuffed with fresh vegetables.", "~/Images/SpringRolls.jpg", true, "Spring Rolls", 5.99m, null },
-                    { 2, 2, "Juicy grilled chicken breast with herbs.", "~/Images/GrilledChicken.jpg", true, "Grilled Chicken", 18.99m, null }
+                    { 2, 1, "Toasted bread with garlic and herbs.", "~/Images/GarlicBread.png", true, "Garlic Bread", 4.99m, null },
+                    { 3, 1, "Grilled bread topped with tomato and basil.", "~/Images/Bruschetta.png", true, "Bruschetta", 6.49m, null },
+                    { 5, 2, "Tender beef steak cooked to perfection.", "~/Images/GrilledChickenBreast.jpg", true, "Beef Steak", 24.99m, null },
+                    { 6, 2, "Grilled salmon fillet with lemon butter sauce.", "~/Images/SalmonFillet.png", true, "Salmon Fillet", 21.50m, null },
+                    { 7, 3, "Rich chocolate cake with ganache.", "~/Images/69b1c95c-1c07-4f76-b889-a6bebceaf14c.png", true, "Chocolate Cake", 7.99m, null },
+                    { 8, 3, "Creamy cheesecake with berry topping.", "~/Images/Cheesecake.jpg", true, "Cheesecake", 8.50m, null },
+                    { 9, 3, "Tart with fresh seasonal fruits.", "~/Images/FruitTart.png", true, "Fruit Tart", 6.75m, null }
                 });
 
             migrationBuilder.CreateIndex(

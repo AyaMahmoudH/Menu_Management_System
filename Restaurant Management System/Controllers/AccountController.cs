@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Azure.Documents;
+using Microsoft.EntityFrameworkCore;
 using Restaurant_Management_System.Hubs;
 using Restaurant_Management_System.Interfaces;
 using Restaurant_Management_System.Models;
@@ -15,17 +17,25 @@ public class AccountController : Controller
     private readonly IAccountService _accountService;
     private readonly ILogger<AccountController> _logger;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ApplicationDbContext _context;
+    private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public AccountController(IAccountService accountService, ILogger<AccountController> logger, IHubContext<NotificationHub> hubContext, UserManager<ApplicationUser> userManager)
+    public AccountController(IAccountService accountService, ILogger<AccountController> logger, IHubContext<NotificationHub> hubContext, UserManager<ApplicationUser> userManager, ApplicationDbContext context, SignInManager<ApplicationUser> signInManager)
     {
         _accountService = accountService;
         _logger = logger;
         _userManager = userManager;
-
+        _context = context;
+        _signInManager = signInManager;
     }
     [HttpGet]
     public IActionResult Login()
     {
+        if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            return RedirectToAction("Register", "Account");
+        }
+
         return View();
     }
 
@@ -50,8 +60,14 @@ public class AccountController : Controller
         if (success)
         {
             _logger.LogInformation("User logged in: {Email}", model.Email);
-            return Json(new { success = true, message = "Login successful!" });
+            var redirectUrl = Url.Action("Index", "MenuItems");
+
+
+            return Json(new { success = true, message = "Login successful!",
+                redirectUrl
+            });
         }
+        
 
         _logger.LogWarning("Login failed for: {Email}", model.Email);
         return Json(new { success = false, message });
@@ -64,7 +80,7 @@ public class AccountController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
+    public async Task<IActionResult> Register([FromForm] RegisterViewModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -75,8 +91,17 @@ public class AccountController : Controller
 
         if (success)
         {
-            _logger.LogInformation("New user registered: {Email}", model.Email);
-            return Json(new { success = true, message = "Registration successful!" });
+
+            _logger.LogInformation("New user registered and signed in: {Email}", model.Email);
+
+            var redirectUrl = Url.Action("Index", "MenuItems");
+
+            return Json(new
+            {
+                success = true,
+                message = "Registration successful!",
+                redirectUrl
+            });
         }
 
         _logger.LogWarning("Registration failed for: {Email}", model.Email);

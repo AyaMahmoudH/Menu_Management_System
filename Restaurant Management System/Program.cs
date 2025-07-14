@@ -35,6 +35,8 @@ builder.Services.AddSignalR();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IMenuItemService, MenuItemService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 
 builder.Services.AddMemoryCache();
 builder.Services.AddResponseCaching();
@@ -107,7 +109,6 @@ using (var scope = app.Services.CreateScope())
     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-    await context.Database.MigrateAsync();
 
     string[] roleNames = { "Admin", "Customer" };
     foreach (var roleName in roleNames)

@@ -6,6 +6,11 @@ namespace Restaurant_Management_System.Controllers
     {
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "MenuItems");
+            }
+
             return View();
         }
     }

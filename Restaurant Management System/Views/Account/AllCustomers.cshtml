@@ -4,25 +4,35 @@
     ViewData["Title"] = "All Registered Customers";
 }
 
-<h2 class="text-center mb-4"><i class="bi bi-people-fill text-primary"></i> All Registered Customers</h2>
+<div class="min-h-screen bg-gradient-to-br from-pink-100 to-pink-200 px-6 py-10">
+    <h2 class="text-3xl font-extrabold text-center text-pink-700 mb-8 flex items-center justify-center gap-3">
+        <i class="bi bi-people-fill text-4xl text-pink-600"></i>
+        All Registered Customers
+    </h2>
 
-<table class="table table-bordered table-striped">
-    <thead class="table-dark">
-        <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var customer in Model)
-        {
-            <tr>
-                <td>@customer.FirstName</td>
-                <td>@customer.LastName</td>
-                <td>@customer.Email</td>
-            </tr>
-        }
-    </tbody>
-</table>
-@Html.Partial("_Pagination", Model)
+    <div class="overflow-x-auto shadow-lg rounded-xl bg-white">
+        <table class="min-w-full text-sm text-gray-800">
+            <thead class="bg-pink-500 text-white text-left uppercase">
+                <tr>
+                    <th class="py-3 px-6">First Name</th>
+                    <th class="py-3 px-6">Last Name</th>
+                    <th class="py-3 px-6">Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in Model)
+                {
+                    <tr class="border-b hover:bg-pink-50 transition duration-200">
+                        <td class="py-3 px-6">@customer.FirstName</td>
+                        <td class="py-3 px-6">@customer.LastName</td>
+                        <td class="py-3 px-6">@customer.Email</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-6 flex justify-center">
+        @Html.Partial("_Pagination", Model)
+    </div>
+</div>

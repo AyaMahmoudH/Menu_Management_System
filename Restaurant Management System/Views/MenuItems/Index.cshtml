@@ -1,76 +1,95 @@
 ﻿@using X.PagedList
 @model IPagedList<Restaurant_Management_System.DTOs.MenuItemDto>
+
 @{
     ViewData["Title"] = "Menu Items";
+    var categories = ViewBag.Categories as List<Restaurant_Management_System.Models.Category>;
+    var selectedId = ViewBag.SelectedCategoryId as int?;
 }
 
-<div class="container-fluid py-3">
-    <div class="card shadow-sm rounded-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="mb-0">Menu Items</h3>
+<div class="min-h-screen bg-white flex flex-col items-center px-4 py-10">
+    <div class="w-full max-w-7xl">
+
+        <div class="mb-8 flex flex-wrap justify-center gap-4">
+            @foreach (var cat in categories)
+            {
+                <a asp-controller="MenuItems"
+                   asp-action="Index"
+                   asp-route-categoryId="@cat.Id"
+                   class="px-5 py-2 rounded-full font-semibold shadow-md transition-transform transform hover:scale-105
+                           @(selectedId == cat.Id ? "bg-pink-500 text-white" : "bg-pink-100 border border-pink-500 text-pink-600 hover:bg-pink-200")">
+                    @cat.Name
+                </a>
+            }
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table id="menuItemsTable" class="table table-bordered table-hover align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Status</th>
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="w-full flex justify-end mb-6">
+                <a asp-controller="MenuItems" asp-action="Create"
+                   class="inline-block px-6 py-2 rounded-full bg-pink-500 text-white font-semibold shadow-md hover:bg-pink-600 transition-colors duration-300">
+                    ➕ Add New Item
+                </a>
+            </div>
+        }
+
+        @if (Model.Any())
+        {
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                @foreach (var item in Model)
+                {
+                    <div class="bg-white border border-pink-200 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                        <div class="p-4">
+                            <div class="w-full h-48 mb-4 overflow-hidden rounded-lg">
+                                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                {
+                                    <img src="@Url.Content(item.ImageUrl)" alt="Product Image" class="w-full h-full object-cover">
+                                }
+                                else
+                                {
+                                    <div class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">
+                                        <i class="fas fa-image fa-2x"></i>
+                                    </div>
+                                }
+                            </div>
+
+                            <h3 class="text-xl font-bold text-pink-600 mb-2">@item.Name</h3>
+                            <p class="text-gray-600 mb-2">@item.Description</p>
+                            <p class="font-semibold text-pink-500 mb-2">Category: @item.CategoryName</p>
+                            <p class="font-semibold mb-2">Price: $@item.Price.ToString("F2")</p>
+                            <span class="inline-block mb-4 px-2 py-1 rounded-full text-xs font-medium
+                                        @(item.IsAvailable ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700")">
+                                @(item.IsAvailable ? "Available" : "Unavailable")
+                            </span>
+
                             @if (User.IsInRole("Admin"))
                             {
-                                <th>Actions</th>
+                                <div class="mt-4 flex gap-2">
+
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                                @await Html.PartialAsync("_MenuItemActions", item.Id)
+                                        }
+                                </div>
+
                             }
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @if (!string.IsNullOrEmpty(item.ImageUrl))
-                                    {
-                                        <img src="@Url.Content(item.ImageUrl)" class="img-thumbnail" style="width: 60px; height: 60px;" />
-                                    }
-                                    else
-                                    {
-                                        <div class="bg-light d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
-                                            <i class="fas fa-image text-muted"></i>
-                                        </div>
-                                    }
-                                </td>
-                                <td>@item.Name</td>
-                                <td>@item.Description</td>
-                                <td>@item.CategoryName</td>
-                                <td>$@item.Price.ToString("F2")</td>
-                                <td>
-                                    <span class="badge bg-@(item.IsAvailable ? "success" : "danger")">
-                                        @(item.IsAvailable ? "Available" : "Unavailable")
-                                    </span>
-                                </td>
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <td>
-                                        @await Html.PartialAsync("_MenuItemActions", item.Id)
-                                    </td>
-                                }
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                        </div>
+                    </div>
+                }
             </div>
+        }
+        else
+        {
+            <p class="text-center text-gray-500 mt-10">No items found in this category.</p>
+        }
+
+        <div class="mt-10">
+            @Html.Partial("_Pagination", Model)
         </div>
     </div>
 </div>
 
-@Html.Partial("_MenuItemModal")
-@Html.Partial("_Pagination", Model)
-
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="~/js/menuitems.js"></script>
 }

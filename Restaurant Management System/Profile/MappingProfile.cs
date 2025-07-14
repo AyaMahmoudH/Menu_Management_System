@@ -9,11 +9,11 @@ namespace Restaurant_Management_System.Profile
         public MappingProfile()
         {
             CreateMap<MenuItem, MenuItemDto>()
-    .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : null))
-    .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.ImageUrl))
-    .ReverseMap();
+           .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : string.Empty))
+           .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.ImageUrl))
+           .ReverseMap();
             CreateMap<MenuItemDto, MenuItem>()
-    .ForMember(dest => dest.Category, opt => opt.Ignore());
+           .ForMember(dest => dest.Category, opt => opt.Ignore());
 
 
         }

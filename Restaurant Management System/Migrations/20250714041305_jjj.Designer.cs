@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Restaurant_Management_System.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250712065514_jj")]
-    partial class jj
+    [Migration("20250714041305_jjj")]
+    partial class jjj
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -325,12 +325,72 @@ namespace Restaurant_Management_System.Migrations
                         new
                         {
                             Id = 2,
-                            CategoryId = 2,
-                            Description = "Juicy grilled chicken breast with herbs.",
-                            ImageUrl = "~/Images/GrilledChicken.jpg",
+                            CategoryId = 1,
+                            Description = "Toasted bread with garlic and herbs.",
+                            ImageUrl = "~/Images/GarlicBread.png",
                             IsAvailable = true,
-                            Name = "Grilled Chicken",
-                            Price = 18.99m
+                            Name = "Garlic Bread",
+                            Price = 4.99m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 1,
+                            Description = "Grilled bread topped with tomato and basil.",
+                            ImageUrl = "~/Images/Bruschetta.png",
+                            IsAvailable = true,
+                            Name = "Bruschetta",
+                            Price = 6.49m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 2,
+                            Description = "Tender beef steak cooked to perfection.",
+                            ImageUrl = "~/Images/GrilledChickenBreast.jpg",
+                            IsAvailable = true,
+                            Name = "Beef Steak",
+                            Price = 24.99m
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryId = 2,
+                            Description = "Grilled salmon fillet with lemon butter sauce.",
+                            ImageUrl = "~/Images/SalmonFillet.png",
+                            IsAvailable = true,
+                            Name = "Salmon Fillet",
+                            Price = 21.50m
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CategoryId = 3,
+                            Description = "Rich chocolate cake with ganache.",
+                            ImageUrl = "~/Images/69b1c95c-1c07-4f76-b889-a6bebceaf14c.png",
+                            IsAvailable = true,
+                            Name = "Chocolate Cake",
+                            Price = 7.99m
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CategoryId = 3,
+                            Description = "Creamy cheesecake with berry topping.",
+                            ImageUrl = "~/Images/Cheesecake.jpg",
+                            IsAvailable = true,
+                            Name = "Cheesecake",
+                            Price = 8.50m
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CategoryId = 3,
+                            Description = "Tart with fresh seasonal fruits.",
+                            ImageUrl = "~/Images/FruitTart.png",
+                            IsAvailable = true,
+                            Name = "Fruit Tart",
+                            Price = 6.75m
                         });
                 });
 

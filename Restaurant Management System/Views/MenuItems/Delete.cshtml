@@ -9,26 +9,7 @@
 
 
 @section Scripts {
-    <script>
-        function deleteMenuItem(id) {
-            Swal.fire({
-                title: "Are you sure?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.post('/MenuItems/Delete', { id }, function (res) {
-                        Swal.fire(res.message, '', res.success ? "success" : "error")
-                            .then(() => {
-                                if (res.success && res.redirectUrl) {
-                                    window.location.href = res.redirectUrl;
-                                }
-                            });
-                    });
-                }
-            });
-        }
-    </script>
+    <script src="~/js/men_D.js"></script>
+
 }
 

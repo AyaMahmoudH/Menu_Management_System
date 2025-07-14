@@ -50,12 +50,75 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     new MenuItem
     {
         Id = 2,
-        Name = "Grilled Chicken",
-        Description = "Juicy grilled chicken breast with herbs.",
-        Price = 18.99m,
-        ImageUrl = "~/Images/GrilledChicken.jpg",
+        Name = "Garlic Bread",
+        Description = "Toasted bread with garlic and herbs.",
+        Price = 4.99m,
+        ImageUrl = "~/Images/GarlicBread.png",
+        IsAvailable = true,
+        CategoryId = 1
+    },
+    new MenuItem
+    {
+        Id = 3,
+        Name = "Bruschetta",
+        Description = "Grilled bread topped with tomato and basil.",
+        Price = 6.49m,
+        ImageUrl = "~/Images/Bruschetta.png",
+        IsAvailable = true,
+        CategoryId = 1
+    },
+
+   
+    new MenuItem
+    {
+        Id = 5,
+        Name = "Beef Steak",
+        Description = "Tender beef steak cooked to perfection.",
+        Price = 24.99m,
+        ImageUrl = "~/Images/GrilledChickenBreast.jpg",
         IsAvailable = true,
         CategoryId = 2
+    },
+    new MenuItem
+    {
+        Id = 6,
+        Name = "Salmon Fillet",
+        Description = "Grilled salmon fillet with lemon butter sauce.",
+        Price = 21.50m,
+        ImageUrl = "~/Images/SalmonFillet.png",
+        IsAvailable = true,
+        CategoryId = 2
+    },
+
+    new MenuItem
+    {
+        Id = 7,
+        Name = "Chocolate Cake",
+        Description = "Rich chocolate cake with ganache.",
+        Price = 7.99m,
+        ImageUrl = "~/Images/69b1c95c-1c07-4f76-b889-a6bebceaf14c.png",
+        IsAvailable = true,
+        CategoryId = 3
+    },
+    new MenuItem
+    {
+        Id = 8,
+        Name = "Cheesecake",
+        Description = "Creamy cheesecake with berry topping.",
+        Price = 8.50m,
+        ImageUrl = "~/Images/Cheesecake.jpg",
+        IsAvailable = true,
+        CategoryId = 3
+    },
+    new MenuItem
+    {
+        Id = 9,
+        Name = "Fruit Tart",
+        Description = "Tart with fresh seasonal fruits.",
+        Price = 6.75m,
+        ImageUrl = "~/Images/FruitTart.png",
+        IsAvailable = true,
+        CategoryId = 3
     }
 );
 
